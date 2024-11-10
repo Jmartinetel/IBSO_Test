@@ -1,19 +1,19 @@
 SELECT
-    FDOC.DNUM AS TicketNumber,
-    FDOC.DFECHA AS Date,
-    FDOC.DBRUTO AS AmountWithoutVAT,
-    FDOC.DIVA AS VAT,
-    (FDOC.DBRUTO + FDOC.DIVA) AS AmountWithVAT,
-    FDOC.DPAR1 AS Seller,
-    FCLI.CLNOM AS Client,
-    FAXINV.ICOD AS SKU,
-    FINV.IDESCR AS Description,
-    FAXINV.AICANT AS Quantity,
-    FAXINV.AIALMACEN AS Warehouse,
-    FINV.ILISTA AS ListPrice,
-    FINV.IFAM3 AS Size,
-    FINV.IFAM4 AS Color,
-    FINV.IFAM5 AS Season
+    FDOC.DNUM AS id_ticket,
+    FDOC.DFECHA AS fecha,
+    FDOC.DBRUTO AS monto,
+    FDOC.DIVA AS iva,
+    (FDOC.DBRUTO + FDOC.DIVA) AS monto_con_iva,
+    FDOC.DPAR1 AS vendedor,
+    FCLI.CLNOM AS cliente,
+    FAXINV.ICOD AS sku,
+    FINV.IDESCR AS descrp,
+    FAXINV.AICANT AS cantidad ,
+    FAXINV.AIALMACEN AS almacen,
+    FINV.ILISTA AS precio,
+    FINV.IFAM3 AS  talla,
+    FINV.IFAM4 AS color,
+    FINV.IFAM5 AS temporada
 FROM
     DOCUMENTOS FDOC
 JOIN
@@ -22,7 +22,3 @@ JOIN
     AUXILIAR_DE_INVENTARIOS FAXINV ON FDOC.DNUM = FAXINV.DREFER 
 JOIN
     INVENTARIOS FINV ON FAXINV.ICOD = FINV.ICOD
-WHERE
-    FDOC.DTIPO = 'Sale'  
-ORDER BY
-    FDOC.DFECHA DESC;
