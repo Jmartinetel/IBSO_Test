@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 # Cargar el archivo de promociones desde la carpeta "data"
 @st.cache_data
 def load_data():
-    # Usar una ruta relativa para acceder al archivo en la carpeta "data"
     file_path = os.path.join('data', 'Prueba_Promociones.csv')
     return pd.read_csv(file_path)
 
@@ -25,12 +24,12 @@ st.title("Proyección de Inventario")
 st.sidebar.header("Parámetros de Entrada")
 
 
-# Obtener opciones únicas de las columnas de categoría, uso y SKU
+
 categorias = promotions_data['Categoria'].unique()
 usos = promotions_data['Uso'].unique()
 skus = promotions_data['SKU'].unique()
 
-# Crear listas desplegables con opciones
+# Crear las opcinoes
 fecha_inicio = st.sidebar.text_input("Fecha de inicio (YYYY-MM-DD)", "2024-01-01")
 fecha_fin = st.sidebar.text_input("Fecha de fin (YYYY-MM-DD)", "2024-12-31")
 categoria = st.sidebar.selectbox("Categoría del producto", categorias)
@@ -39,7 +38,6 @@ sku = st.sidebar.selectbox("SKU del producto", skus)
 porcentaje_incremento = st.sidebar.number_input("Porcentaje de incremento (decimal)", 0.1)
 inventario_inicial = st.sidebar.number_input("Inventario inicial", 100)
 
-# Convertir fechas a datetime
 fecha_inicio_dt = datetime.strptime(fecha_inicio, '%Y-%m-%d') if fecha_inicio else None
 fecha_fin_dt = datetime.strptime(fecha_fin, '%Y-%m-%d') if fecha_fin else None
 
@@ -60,10 +58,10 @@ uso_categoria_condicion = (
     True
 )
 
-# Aplicar ajuste en 'Piezas' según porcentaje
+# Aplicar ajuste en Piezas según porcentaje
 promotions_data.loc[fecha_condicion & modelo_condicion & uso_categoria_condicion, 'Piezas Ajuste'] = promotions_data['Piezas'] * (1 + porcentaje_incremento)
 
-# Filtrar datos específicos para el SKU seleccionado
+# Filtrar datos espec para el SKU seleccionado
 sku_data = promotions_data[promotions_data['SKU'] == sku].copy()
 sku_data = sku_data.sort_values(by='Fecha')
 sku_data['Inventario'] = inventario_inicial
@@ -77,7 +75,7 @@ for i in range(1, len(sku_data)):
 # Identificar la primera fecha con inventario negativo
 fecha_negativa = sku_data[sku_data['Inventario'] < 0].iloc[0]['Fecha'] if not sku_data[sku_data['Inventario'] < 0].empty else None
 
-# Mostrar resultados en tabla
+
 st.subheader("Resultados de la Proyección de Inventario")
 
 if fecha_negativa:
