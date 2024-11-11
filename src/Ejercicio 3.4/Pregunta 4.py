@@ -43,7 +43,9 @@ inventario_inicial = st.sidebar.number_input("Inventario inicial", 100)
 fecha_inicio_dt = datetime.strptime(fecha_inicio, '%Y-%m-%d') if fecha_inicio else None
 fecha_fin_dt = datetime.strptime(fecha_fin, '%Y-%m-%d') if fecha_fin else None
 
-# Condiciones para el filtrado y cálculo del ajuste
+# Condiciones para el filtrado
+
+
 fecha_condicion = (
     (promotions_data['Fecha'] >= fecha_inicio_dt) & (promotions_data['Fecha'] <= fecha_fin_dt) 
     if fecha_inicio_dt and fecha_fin_dt else
@@ -83,7 +85,7 @@ if fecha_negativa:
 else:
     st.success("El inventario no se vuelve negativo en el periodo seleccionado.")
 
-# Crear una gráfica del inventario en el tiempo
+
 st.subheader("Gráfica de Decrecimiento del Inventario")
 
 plt.figure(figsize=(10, 6))
@@ -92,9 +94,7 @@ plt.axhline(0, color='red', linestyle='--', label='Nivel de Inventario Cero')
 plt.title("Proyección del Inventario en el Tiempo")
 plt.xlabel("Fecha")
 plt.ylabel("Inventario")
-plt.xticks(rotation=45)
 plt.legend()
-plt.grid(True)
 
-# Mostrar la gráfica en Streamlit
+
 st.pyplot(plt)
